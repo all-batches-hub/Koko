@@ -20,7 +20,7 @@
         }
         .app-container {
             width: 100%;
-            max-width: 480px; /* Mobile app style width frame */
+            max-width: 480px;
             background: #0b0f19;
         }
         /* Header Section */
@@ -48,66 +48,64 @@
             font-weight: bold;
         }
         .logo-text h1 {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
             letter-spacing: 0.5px;
-            color: #f8fafc;
+            color: #fbe68a;
         }
         .logo-text p {
-            font-size: 10px;
+            font-size: 9px;
             color: #94a3b8;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
-        .search-btn {
-            background: #1e293b;
+        .search-bar {
+            background: #131b2e;
             color: #94a3b8;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 20px;
+            border: 1px solid #1e293b;
+            padding: 10px 15px;
+            border-radius: 25px;
             font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
+            width: 140px;
             cursor: pointer;
+        }
+        .search-bar span {
+            background: #f59e0b;
+            color: #000;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
         }
 
         /* Navigation Tabs */
         .nav-tabs {
             display: flex;
-            gap: 10px;
+            justify-content: center;
+            gap: 25px;
             margin-bottom: 20px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-        .nav-tabs::-webkit-scrollbar {
-            display: none;
+            border-bottom: 1px solid #131b2e;
+            padding-bottom: 12px;
         }
         .tab {
-            background: #1e293b;
+            background: none;
             color: #94a3b8;
             border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            white-space: nowrap;
         }
         .tab.active {
-            background: #f59e0b;
-            color: #000;
-        }
-
-        /* Section Heading */
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            letter-spacing: 0.5px;
+            color: #fbe68a;
+            background: #1e293b;
+            padding: 6px 18px;
+            border-radius: 20px;
         }
 
         /* Movie Grid Layout (2 Columns) */
@@ -115,6 +113,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
+            margin-bottom: 25px;
         }
         .movie-card {
             background: #131b2e;
@@ -122,21 +121,20 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            position: relative;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
         .poster-container {
             position: relative;
             width: 100%;
-            height: 220px;
-            background: #1e293b;
+            height: 180px;
+            background: #1a233a;
         }
         .poster-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .badge {
+        .badge-movie {
             position: absolute;
             top: 8px;
             right: 8px;
@@ -144,31 +142,100 @@
             color: #000;
             font-size: 9px;
             font-weight: bold;
-            padding: 3px 8px;
+            padding: 2px 7px;
             border-radius: 4px;
             text-transform: uppercase;
+        }
+        .badge-show {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #10b981;
+            color: #000;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 7px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .badge-s02 {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #3b82f6;
+            color: #fff;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
         }
         .movie-info {
             padding: 10px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             flex-grow: 1;
             justify-content: space-between;
         }
         .movie-title {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 500;
             color: #f8fafc;
             line-height: 1.3;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
         .movie-year {
             font-size: 11px;
             color: #94a3b8;
+        }
+
+        /* Pagination Section */
+        .pagination-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #131b2e;
+            padding: 8px 12px;
+            border-radius: 12px;
+        }
+        .page-btn {
+            background: #1e293b;
+            color: #94a3b8;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .page-btn.active {
+            background: #f59e0b;
+            color: #000;
+        }
+        .page-dots {
+            color: #64748b;
+            font-size: 12px;
+            padding: 0 2px;
+        }
+        .page-info {
+            font-size: 12px;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -184,9 +251,9 @@
                     <p>YOUR MOVIE PARADISE</p>
                 </div>
             </div>
-            <button class="search-btn">
-                🔍 Search
-            </button>
+            <div class="search-bar">
+                Search movies <span>🔍</span>
+            </div>
         </div>
 
         <!-- Navigation Tabs -->
@@ -194,46 +261,76 @@
             <button class="tab active">Home</button>
             <button class="tab">Movies</button>
             <button class="tab">Series</button>
-            <button class="tab">Anime</button>
-        </div>
-
-        <!-- Trending Section -->
-        <div class="section-title">
-            🔥 TRENDING THIS WEEK
         </div>
 
         <!-- Movie Cards Grid -->
-        <div class="main-content">
-            <div class="movie-grid">
-                
-                <!-- Card 1 -->
-                <div class="movie-card">
-                    <div class="poster-container">
-                        <span class="badge">Movie</span>
-                        <!-- Yahan aap apni movie poster image ka link daal sakte hain -->
-                        <div style="width:100%;height:100%;background:#26334d;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:12px;">Poster 1</div>
-                    </div>
-                    <div class="movie-info">
-                        <div class="movie-title">Drishyam The Conclusion 2026 HDTC Hindi Esubs</div>
-                        <div class="movie-year">2026</div>
-                    </div>
+        <div class="movie-grid">
+            
+            <!-- Card 1 (Doraemon) -->
+            <div class="movie-card">
+                <div class="poster-container">
+                    <div style="width:100%;height:100%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px;">Poster 1</div>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="movie-card">
-                    <div class="poster-container">
-                        <span class="badge">Movie</span>
-                        <div style="width:100%;height:100%;background:#26334d;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:12px;">Poster 2</div>
-                    </div>
-                    <div class="movie-info">
-                        <div class="movie-title">Toxic 2026 WebRip Hindi Kannada Esubs</div>
-                        <div class="movie-year">2026</div>
-                    </div>
+                <div class="movie-info">
+                    <div class="movie-title">Doraemon: Nobita and the New Castle of the Undersea Devil 2026 BluRay Hindi Japanese Esubs</div>
+                    <div class="movie-year">2026</div>
                 </div>
-
             </div>
+
+            <!-- Card 2 (The Widower) -->
+            <div class="movie-card">
+                <div class="poster-container">
+                    <div style="width:100%;height:100%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px;">Poster 2</div>
+                </div>
+                <div class="movie-info">
+                    <div class="movie-title">The Widower: Til Death Do Us Part 2026 WebRip Hindi English Esubs</div>
+                    <div class="movie-year">2026</div>
+                </div>
+            </div>
+
+            <!-- Card 3 (Vadam - Movie Badge) -->
+            <div class="movie-card">
+                <div class="poster-container">
+                    <span class="badge-movie">MOVIE</span>
+                    <div style="width:100%;height:100%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px;">Vadam Poster</div>
+                </div>
+                <div class="movie-info">
+                    <div class="movie-title">Vadam 2026 WebRip Hindi Tamil Esubs</div>
+                    <div class="movie-year">2026</div>
+                </div>
+            </div>
+
+            <!-- Card 4 (Red Queen - TV Show & S02 Badges) -->
+            <div class="movie-card">
+                <div class="poster-container">
+                    <span class="badge-s02">S02</span>
+                    <span class="badge-show">TV SHOW</span>
+                    <div style="width:100%;height:100%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px;">Red Queen Poster</div>
+                </div>
+                <div class="movie-info">
+                    <div class="movie-title">Red Queen 2026 S02 WebRip Hindi English Esubs</div>
+                    <div class="movie-year">2024</div>
+                </div>
+            </div>
+
         </div>
+
+        <!-- Bottom Pagination Section -->
+        <div class="pagination-container">
+            <div class="pagination">
+                <button class="page-btn">&lt;</button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <span class="page-dots">...</span>
+                <button class="page-btn">223</button>
+                <button class="page-btn">&gt;</button>
+            </div>
+            <div class="page-info">Page 1 of 223</div>
+        </div>
+
     </div>
 
 </body>
-</html>
+                    </html>
+                    
