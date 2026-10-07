@@ -59,36 +59,46 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
-        .search-bar {
-            background: #131b2e;
-            color: #94a3b8;
-            border: 1px solid #1e293b;
-            padding: 10px 15px;
-            border-radius: 25px;
-            font-size: 13px;
+        .search-box-container {
+            position: relative;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            width: 140px;
-            cursor: pointer;
         }
-        .search-bar span {
+        .search-input {
+            background: #131b2e;
+            color: #ffffff;
+            border: 1px solid #1e293b;
+            padding: 10px 15px;
+            padding-right: 38px;
+            border-radius: 25px;
+            font-size: 13px;
+            width: 160px;
+            outline: none;
+        }
+        .search-input:focus {
+            border-color: #f59e0b;
+        }
+        .search-icon-btn {
+            position: absolute;
+            right: 5px;
             background: #f59e0b;
             color: #000;
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 11px;
+            border: none;
+            cursor: pointer;
         }
 
         /* Navigation Tabs */
         .nav-tabs {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 15px;
             margin-bottom: 20px;
             border-bottom: 1px solid #131b2e;
             padding-bottom: 12px;
@@ -100,15 +110,16 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
+            padding: 6px 16px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
         }
         .tab.active {
             color: #fbe68a;
             background: #1e293b;
-            padding: 6px 18px;
-            border-radius: 20px;
         }
 
-        /* Movie Grid Layout (2 Columns) */
+        /* Movie Grid Layout */
         .movie-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -128,11 +139,11 @@
             width: 100%;
             height: 180px;
             background: #1a233a;
-        }
-        .poster-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 11px;
         }
         .badge-movie {
             position: absolute;
@@ -158,7 +169,7 @@
             border-radius: 4px;
             text-transform: uppercase;
         }
-        .badge-s02 {
+        .badge-season {
             position: absolute;
             top: 8px;
             left: 8px;
@@ -191,51 +202,12 @@
             font-size: 11px;
             color: #94a3b8;
         }
-
-        /* Pagination Section */
-        .pagination-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .pagination {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #131b2e;
-            padding: 8px 12px;
-            border-radius: 12px;
-        }
-        .page-btn {
-            background: #1e293b;
+        .no-results {
+            grid-column: span 2;
+            text-align: center;
             color: #94a3b8;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .page-btn.active {
-            background: #f59e0b;
-            color: #000;
-        }
-        .page-dots {
-            color: #64748b;
-            font-size: 12px;
-            padding: 0 2px;
-        }
-        .page-info {
-            font-size: 12px;
-            color: #94a3b8;
-            letter-spacing: 0.5px;
+            padding: 30px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -251,86 +223,110 @@
                     <p>YOUR MOVIE PARADISE</p>
                 </div>
             </div>
-            <div class="search-bar">
-                Search movies <span>🔍</span>
+            <div class="search-box-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search movies..." onkeyup="filterContent()">
+                <button class="search-icon-btn">🔍</button>
             </div>
         </div>
 
         <!-- Navigation Tabs -->
         <div class="nav-tabs">
-            <button class="tab active">Home</button>
-            <button class="tab">Movies</button>
-            <button class="tab">Series</button>
+            <button class="tab active" onclick="switchTab('home', this)">Home</button>
+            <button class="tab" onclick="switchTab('movies', this)">Movies</button>
+            <button class="tab" onclick="switchTab('series', this)">Series</button>
         </div>
 
         <!-- Movie Cards Grid -->
-        <div class="movie-grid">
-            
-            <!-- Card 1 (Doraemon) -->
-            <div class="movie-card">
-                <div class="poster-container">
-                    <div style="width:100%;height:100%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px;">Poster 1</div>
-                </div>
-                <div class="movie-info">
-                    <div class="movie-title">Doraemon: Nobita and the New Castle of the Undersea Devil 2026 BluRay Hindi Japanese Esubs</div>
-                    <div class="movie-year">2026</div>
-                </div>
-            </div>
-
-            <!-- Card 2 (The Widower) -->
-            <div class="movie-card">
-                <div class="poster-container">
-                    <div style="width:100%;height:100%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px;">Poster 2</div>
-                </div>
-                <div class="movie-info">
-                    <div class="movie-title">The Widower: Til Death Do Us Part 2026 WebRip Hindi English Esubs</div>
-                    <div class="movie-year">2026</div>
-                </div>
-            </div>
-
-            <!-- Card 3 (Vadam - Movie Badge) -->
-            <div class="movie-card">
-                <div class="poster-container">
-                    <span class="badge-movie">MOVIE</span>
-                    <div style="width:100%;height:100%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px;">Vadam Poster</div>
-                </div>
-                <div class="movie-info">
-                    <div class="movie-title">Vadam 2026 WebRip Hindi Tamil Esubs</div>
-                    <div class="movie-year">2026</div>
-                </div>
-            </div>
-
-            <!-- Card 4 (Red Queen - TV Show & S02 Badges) -->
-            <div class="movie-card">
-                <div class="poster-container">
-                    <span class="badge-s02">S02</span>
-                    <span class="badge-show">TV SHOW</span>
-                    <div style="width:100%;height:100%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:11px;">Red Queen Poster</div>
-                </div>
-                <div class="movie-info">
-                    <div class="movie-title">Red Queen 2026 S02 WebRip Hindi English Esubs</div>
-                    <div class="movie-year">2024</div>
-                </div>
-            </div>
-
+        <div class="movie-grid" id="movieGrid">
+            <!-- Dynamic Content loaded via JavaScript -->
         </div>
-
-        <!-- Bottom Pagination Section -->
-        <div class="pagination-container">
-            <div class="pagination">
-                <button class="page-btn">&lt;</button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <span class="page-dots">...</span>
-                <button class="page-btn">223</button>
-                <button class="page-btn">&gt;</button>
-            </div>
-            <div class="page-info">Page 1 of 223</div>
-        </div>
-
     </div>
 
+    <script>
+        // Database of items representing Home, Movies, and Series categories
+        const items = [
+            { id: 1, title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
+            { id: 2, title: "Toxic 2026 WebRip Hindi Kannada Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
+            { id: 3, title: "Vadam 2026 WebRip Hindi Tamil Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
+            { id: 4, title: "Spider Man: Brand New Day 2026 WebRip Hindi English Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
+            { id: 5, title: "Insidious: Out of the Further 2026 WebRip Hindi English Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
+            { id: 6, title: "East of Eden 2026 S01 WebRip Hindi English Esubs", year: "2026", category: "series", badgeType: "show", badgeText: "TV SHOW", season: "S01" },
+            { id: 7, title: "Lanterns 2026 S01 WebRip Hindi English Esubs", year: "2026", category: "series", badgeType: "show", badgeText: "TV SHOW", season: "S01" },
+            { id: 8, title: "Red Queen 2026 S02 WebRip Hindi English Esubs", year: "2024", category: "series", badgeType: "show", badgeText: "TV SHOW", season: "S02" },
+            { id: 9, title: "Debipokkho 2026 S01 WebRip Bengali Esubs", year: "2026", category: "series", badgeType: "show", badgeText: "TV SHOW", season: "S01" }
+        ];
+
+        let currentTab = 'home';
+
+        function renderItems(dataToRender) {
+            const grid = document.getElementById('movieGrid');
+            grid.innerHTML = '';
+
+            if (dataToRender.length === 0) {
+                grid.innerHTML = `<div class="no-results">No movies or series found.</div>`;
+                return;
+            }
+
+            dataToRender.forEach(item => {
+                let badgeHTML = '';
+                if (item.badgeType === 'movie') {
+                    badgeHTML = `<span class="badge-movie">${item.badgeText}</span>`;
+                } else if (item.badgeType === 'show') {
+                    badgeHTML = `
+                        ${item.season ? `<span class="badge-season">${item.season}</span>` : ''}
+                        <span class="badge-show">${item.badgeText}</span>
+                    `;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.innerHTML = `
+                    <div class="poster-container">
+                        ${badgeHTML}
+                        <span>Poster Image</span>
+                    </div>
+                    <div class="movie-info">
+                        <div class="movie-title">${item.title}</div>
+                        <div class="movie-year">${item.year}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function switchTab(tabName, element) {
+            currentTab = tabName;
+            
+            // Update active tab styling
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+
+            // Clear search when switching tabs for better user experience
+            document.getElementById('searchInput').value = '';
+
+            filterContent();
+        }
+
+        function filterContent() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            
+            // Filter by tab category first
+            let filtered = items.filter(item => {
+                if (currentTab === 'home') return true; // Home shows everything
+                return item.category === currentTab;
+            });
+
+            // Then filter by search query if text is entered
+            if (searchQuery.trim() !== '') {
+                filtered = filtered.filter(item => item.title.toLowerCase().includes(searchQuery));
+            }
+
+            renderItems(filtered);
+        }
+
+        // Initial render on load (Home tab)
+        renderItems(items);
+    </script>
+
 </body>
-                    </html>
-                    
+</html>
