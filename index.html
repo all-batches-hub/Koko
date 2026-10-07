@@ -234,7 +234,8 @@
                 <div class="logo-area">
                     <div class="logo-icon">🎬</div>
                     <div class="logo-text">
-                        <h1>ATOZ CINEMAS</h1>
+                        <h1>Sky4k MOVIES</h1>
+            
                         <p>YOUR MOVIE PARADISE</p>
                     </div>
                 </div>
@@ -256,9 +257,11 @@
     </div>
 
     <script>
-        // 1. Yahan aap apni Movies add karenge (Nayi movie hamesha sabse upar likhein)
+        // Har item mein ek 'id' di gayi hai (jitna bada number, utna recent upload).
+        // Jab aap koi naya item dalein, toh uska id sabse bada rakhein taaki woh top par aaye.
         const moviesList = [
             { 
+                id: 1,
                 title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs", 
                 year: "2026", 
                 category: "movies", 
@@ -268,6 +271,7 @@
                 url: "https://example.com/drishyam" 
             },
             { 
+                id: 3, // Maan lijiye yeh 6 baje wali movie hai, iska id bada hai
                 title: "Toxic 2026 WebRip Hindi Kannada Esubs", 
                 year: "2026", 
                 category: "movies", 
@@ -278,59 +282,16 @@
             }
         ];
 
-        // 2. Yahan aap apne TV Shows add karenge (Naya show hamesha sabse upar likhein)
         const showsList = [
-
-
             { 
+                id: 2, // Maan lijiye yeh 5 baje wala show hai
                 title: "East of Eden 2026 S01 WebRip Hindi English Esubs", 
                 year: "2026", 
                 category: "series", 
                 badgeType: "show", 
                 badgeText: "TV SHOW", 
                 season: "S01", 
-                url: "https://youtu.be/aJj-jf48Vis?si=qLYi_ceeoZKjuQbj" 
-            },
-
-
-            
-
-            
-            { 
-                title: "East of Eden 2026 S03 WebRip Hindi English Esubs", 
-                year: "2025", 
-                category: "series", 
-                badgeType: "show", 
-                badgeText: "TV SHOW", 
-                season: "S03", 
                 url: "https://example.com/east-of-eden" 
-            },
-
-
-
-            { 
-                title: "East of Eden 2026 S02 WebRip Hindi English Esubs", 
-                year: "2025", 
-                category: "series", 
-                badgeType: "show", 
-                badgeText: "TV SHOW", 
-                season: "S02", 
-                url: "https://youtu.be/aJj-jf48Vis?si=qLYi_ceeoZKjuQbj" 
-            },
-
-
-
-
-
-            
-            { 
-                title: "Red Queen 2026 S02 WebRip Hindi English Esubs", 
-                year: "2024", 
-                category: "series", 
-                badgeType: "show", 
-                badgeText: "TV SHOW", 
-                season: "S01", 
-                url: "https://example.com/red-queen" 
             }
         ];
 
@@ -388,12 +349,15 @@
             let combinedList = [];
             
             if (currentTab === 'movies') {
-                combinedList = moviesList;
+                // Movies section mein sirf movies dikhengi (latest upar rakhne ke liye id se sort)
+                combinedList = [...moviesList].sort((a, b) => b.id - a.id);
             } else if (currentTab === 'series') {
-                combinedList = showsList;
+                // Series section mein sirf shows dikhenge (latest upar rakhne ke liye id se sort)
+                combinedList = [...showsList].sort((a, b) => b.id - a.id);
             } else {
-                // Home tab ke liye movies aur shows ko mix kiya jata hai taaki dono ke latest items top par dikhein
-                combinedList = [...moviesList, ...showsList];
+                // Home tab mein movies aur shows dono mix honge aur id ke hisab se 
+                // sabse bada id (latest upload) sabse upar dikhega!
+                combinedList = [...moviesList, ...showsList].sort((a, b) => b.id - a.id);
             }
 
             if (searchQuery.trim() !== '') {
