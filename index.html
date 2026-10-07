@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sky 4kHub - YOUR MOVIE PARADISE</title>
+    <title>AtoZ Cinemas - Your Movie Paradise</title>
     <style>
         * {
             box-sizing: border-box;
@@ -24,8 +24,6 @@
             background: #0b0f19;
             position: relative;
         }
-
-        /* Sticky Header Section (Jo scroll karne par upar fix rahega) */
         .sticky-top-section {
             position: sticky;
             top: 0;
@@ -34,8 +32,6 @@
             padding-top: 5px;
             padding-bottom: 10px;
         }
-
-        /* Header Layout */
         .header {
             display: flex;
             align-items: center;
@@ -105,8 +101,6 @@
             border: none;
             cursor: pointer;
         }
-
-        /* Attractive Rounded Box for Navigation Tabs */
         .nav-box-container {
             background: #131b2e;
             padding: 5px;
@@ -133,8 +127,6 @@
             color: #000;
             background: #f59e0b;
         }
-
-        /* Movie Grid Layout */
         .movie-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -149,6 +141,12 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s;
+        }
+        .movie-card:hover {
+            transform: translateY(-3px);
         }
         .poster-container {
             position: relative;
@@ -231,14 +229,12 @@
 
     <div class="app-container">
         
-        <!-- Sticky Top Section (Header + Rounded Tabs Box) -->
         <div class="sticky-top-section">
-            <!-- Header -->
             <div class="header">
                 <div class="logo-area">
                     <div class="logo-icon">🎬</div>
                     <div class="logo-text">
-                        <h1>Sky 4kHub</h1>
+                        <h1>ATOZ CINEMAS</h1>
                         <p>YOUR MOVIE PARADISE</p>
                     </div>
                 </div>
@@ -248,7 +244,6 @@
                 </div>
             </div>
 
-            <!-- Rounded Navigation Box -->
             <div class="nav-box-container">
                 <button class="tab active" onclick="switchTab('home', this)">Home</button>
                 <button class="tab" onclick="switchTab('movies', this)">Movies</button>
@@ -256,24 +251,53 @@
             </div>
         </div>
 
-        <!-- Movie Cards Grid (Yeh scroll hoga) -->
-        <div class="movie-grid" id="movieGrid">
-            <!-- Dynamic Content loaded via JavaScript -->
-        </div>
+        <div class="movie-grid" id="movieGrid"></div>
 
     </div>
 
     <script>
-        const items = [
-            { id: 1, title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
-            { id: 2, title: "Toxic 2026 WebRip Hindi Kannada Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
-            { id: 3, title: "Vadam 2026 WebRip Hindi Tamil Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
-            { id: 4, title: "Spider Man: Brand New Day 2026 WebRip Hindi English Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
-            { id: 5, title: "Insidious: Out of the Further 2026 WebRip Hindi English Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
-            { id: 6, title: "East of Eden 2026 S01 WebRip Hindi English Esubs", year: "2026", category: "series", badgeType: "show", badgeText: "TV SHOW", season: "S01" },
-            { id: 7, title: "Lanterns 2026 S01 WebRip Hindi English Esubs", year: "2026", category: "series", badgeType: "show", badgeText: "TV SHOW", season: "S01" },
-            { id: 8, title: "Red Queen 2026 S02 WebRip Hindi English Esubs", year: "2024", category: "series", badgeType: "show", badgeText: "TV SHOW", season: "S02" },
-            { id: 9, title: "Debipokkho 2026 S01 WebRip Bengali Esubs", year: "2026", category: "series", badgeType: "show", badgeText: "TV SHOW", season: "S01" }
+        // 1. Yahan aap apni Movies add karenge (Nayi movie hamesha sabse upar likhein)
+        const moviesList = [
+            { 
+                title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs", 
+                year: "2026", 
+                category: "movies", 
+                badgeType: "movie", 
+                badgeText: "MOVIE", 
+                season: "", 
+                url: "https://example.com/drishyam" 
+            },
+            { 
+                title: "Toxic 2026 WebRip Hindi Kannada Esubs", 
+                year: "2026", 
+                category: "movies", 
+                badgeType: "movie", 
+                badgeText: "MOVIE", 
+                season: "", 
+                url: "https://example.com/toxic" 
+            }
+        ];
+
+        // 2. Yahan aap apne TV Shows add karenge (Naya show hamesha sabse upar likhein)
+        const showsList = [
+            { 
+                title: "East of Eden 2026 S01 WebRip Hindi English Esubs", 
+                year: "2026", 
+                category: "series", 
+                badgeType: "show", 
+                badgeText: "TV SHOW", 
+                season: "S01", 
+                url: "https://example.com/east-of-eden" 
+            },
+            { 
+                title: "Red Queen 2026 S02 WebRip Hindi English Esubs", 
+                year: "2024", 
+                category: "series", 
+                badgeType: "show", 
+                badgeText: "TV SHOW", 
+                season: "S02", 
+                url: "https://example.com/red-queen" 
+            }
         ];
 
         let currentTab = 'home';
@@ -283,7 +307,7 @@
             grid.innerHTML = '';
 
             if (dataToRender.length === 0) {
-                grid.innerHTML = `<div class="no-results">No movies or series found.</div>`;
+                grid.innerHTML = `<div class="no-results">Koi content nahi mila.</div>`;
                 return;
             }
 
@@ -298,8 +322,10 @@
                     `;
                 }
 
-                const card = document.createElement('div');
+                const card = document.createElement('a');
                 card.className = 'movie-card';
+                card.href = item.url;
+                card.target = '_blank';
                 card.innerHTML = `
                     <div class="poster-container">
                         ${badgeHTML}
@@ -316,10 +342,8 @@
 
         function switchTab(tabName, element) {
             currentTab = tabName;
-            
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             element.classList.add('active');
-
             document.getElementById('searchInput').value = '';
             filterContent();
         }
@@ -327,19 +351,25 @@
         function filterContent() {
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
             
-            let filtered = items.filter(item => {
-                if (currentTab === 'home') return true;
-                return item.category === currentTab;
-            });
-
-            if (searchQuery.trim() !== '') {
-                filtered = filtered.filter(item => item.title.toLowerCase().includes(searchQuery));
+            let combinedList = [];
+            
+            if (currentTab === 'movies') {
+                combinedList = moviesList;
+            } else if (currentTab === 'series') {
+                combinedList = showsList;
+            } else {
+                // Home tab ke liye movies aur shows ko mix kiya jata hai taaki dono ke latest items top par dikhein
+                combinedList = [...moviesList, ...showsList];
             }
 
-            renderItems(filtered);
+            if (searchQuery.trim() !== '') {
+                combinedList = combinedList.filter(item => item.title.toLowerCase().includes(searchQuery));
+            }
+
+            renderItems(combinedList);
         }
 
-        renderItems(items);
+        filterContent();
     </script>
 
 </body>
