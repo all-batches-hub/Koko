@@ -22,8 +22,20 @@
             width: 100%;
             max-width: 480px;
             background: #0b0f19;
+            position: relative;
         }
-        /* Header Section */
+
+        /* Sticky Header Section (Jo scroll karne par upar fix rahega) */
+        .sticky-top-section {
+            position: sticky;
+            top: 0;
+            background-color: #0b0f19;
+            z-index: 1000;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+
+        /* Header Layout */
         .header {
             display: flex;
             align-items: center;
@@ -72,7 +84,7 @@
             padding-right: 38px;
             border-radius: 25px;
             font-size: 13px;
-            width: 160px;
+            width: 150px;
             outline: none;
         }
         .search-input:focus {
@@ -94,29 +106,32 @@
             cursor: pointer;
         }
 
-        /* Navigation Tabs */
-        .nav-tabs {
+        /* Attractive Rounded Box for Navigation Tabs */
+        .nav-box-container {
+            background: #131b2e;
+            padding: 5px;
+            border-radius: 30px;
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #131b2e;
-            padding-bottom: 12px;
+            gap: 5px;
+            border: 1px solid #1e293b;
+            margin-bottom: 10px;
         }
         .tab {
-            background: none;
+            flex: 1;
+            background: transparent;
             color: #94a3b8;
             border: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            padding: 6px 16px;
+            padding: 8px 0;
             border-radius: 20px;
-            transition: all 0.2s ease;
+            text-align: center;
+            transition: all 0.25s ease;
         }
         .tab.active {
-            color: #fbe68a;
-            background: #1e293b;
+            color: #000;
+            background: #f59e0b;
         }
 
         /* Movie Grid Layout */
@@ -124,6 +139,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
+            margin-top: 10px;
             margin-bottom: 25px;
         }
         .movie-card {
@@ -214,36 +230,40 @@
 <body>
 
     <div class="app-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo-area">
-                <div class="logo-icon">🎬</div>
-                <div class="logo-text">
-                    <h1>ATOZ CINEMAS</h1>
-                    <p>YOUR MOVIE PARADISE</p>
+        
+        <!-- Sticky Top Section (Header + Rounded Tabs Box) -->
+        <div class="sticky-top-section">
+            <!-- Header -->
+            <div class="header">
+                <div class="logo-area">
+                    <div class="logo-icon">🎬</div>
+                    <div class="logo-text">
+                        <h1>ATOZ CINEMAS</h1>
+                        <p>YOUR MOVIE PARADISE</p>
+                    </div>
+                </div>
+                <div class="search-box-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search..." onkeyup="filterContent()">
+                    <button class="search-icon-btn">🔍</button>
                 </div>
             </div>
-            <div class="search-box-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="Search movies..." onkeyup="filterContent()">
-                <button class="search-icon-btn">🔍</button>
+
+            <!-- Rounded Navigation Box -->
+            <div class="nav-box-container">
+                <button class="tab active" onclick="switchTab('home', this)">Home</button>
+                <button class="tab" onclick="switchTab('movies', this)">Movies</button>
+                <button class="tab" onclick="switchTab('series', this)">Series</button>
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
-        <div class="nav-tabs">
-            <button class="tab active" onclick="switchTab('home', this)">Home</button>
-            <button class="tab" onclick="switchTab('movies', this)">Movies</button>
-            <button class="tab" onclick="switchTab('series', this)">Series</button>
-        </div>
-
-        <!-- Movie Cards Grid -->
+        <!-- Movie Cards Grid (Yeh scroll hoga) -->
         <div class="movie-grid" id="movieGrid">
             <!-- Dynamic Content loaded via JavaScript -->
         </div>
+
     </div>
 
     <script>
-        // Database of items representing Home, Movies, and Series categories
         const items = [
             { id: 1, title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
             { id: 2, title: "Toxic 2026 WebRip Hindi Kannada Esubs", year: "2026", category: "movies", badgeType: "movie", badgeText: "MOVIE", season: "" },
@@ -297,26 +317,21 @@
         function switchTab(tabName, element) {
             currentTab = tabName;
             
-            // Update active tab styling
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             element.classList.add('active');
 
-            // Clear search when switching tabs for better user experience
             document.getElementById('searchInput').value = '';
-
             filterContent();
         }
 
         function filterContent() {
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
             
-            // Filter by tab category first
             let filtered = items.filter(item => {
-                if (currentTab === 'home') return true; // Home shows everything
+                if (currentTab === 'home') return true;
                 return item.category === currentTab;
             });
 
-            // Then filter by search query if text is entered
             if (searchQuery.trim() !== '') {
                 filtered = filtered.filter(item => item.title.toLowerCase().includes(searchQuery));
             }
@@ -324,7 +339,6 @@
             renderItems(filtered);
         }
 
-        // Initial render on load (Home tab)
         renderItems(items);
     </script>
 
