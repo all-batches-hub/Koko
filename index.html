@@ -258,48 +258,94 @@
     </div>
 
     <script>
-        // 1. Movies List (Nayi movie ka ID sabse bada rakhein)
-        const moviesList = [
-            { 
+        // =========================================================
+        //               SINGLE CONTENT LIST
+        // =========================================================
+        // बस यहीं नया Movie या Series जोड़ें।
+        //
+        // category:
+        //   "movies" -> Movies section
+        //   "series" -> Series section
+        //
+        // ID जितना बड़ा होगा, content उतना ऊपर दिखाई देगा।
+        // =========================================================
+
+        const contentList = [
+            {
                 id: 1,
-                title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs", 
-                year: "2026", 
-                category: "movies", 
-                badgeType: "movie", 
-                badgeText: "MOVIE", 
-                season: "", 
-                url: "https://example.com/drishyam" 
+                title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs",
+                year: "2026",
+                category: "movies",
+                url: "https://example.com/drishyam"
             },
-            { 
+
+            {
                 id: 3,
-                title: "Toxic 2026 WebRip Hindi Kannada Esubs", 
-                year: "2026", 
-                category: "movies", 
-                badgeType: "movie", 
-                badgeText: "MOVIE", 
-                season: "", 
-                url: "https://example.com/toxic" 
-            }
-        ];
+                title: "Toxic 2026 WebRip Hindi Kannada Esubs",
+                year: "2026",
+                category: "movies",
+                url: "https://example.com/toxic"
+            },
 
-        // 2. Series List (Naye show ka ID sabse bada rakhein)
-        const showsList = [
-            { 
+            {
                 id: 2,
-                title: "East of Eden 2026 S01 WebRip Hindi English Esubs", 
-                year: "2026", 
-                category: "series", 
-                badgeType: "show", 
-                badgeText: "TV SHOW", 
-                season: "S01", 
-                url: "https://example.com/east-of-eden" 
+                title: "East of Eden 2026 S01 WebRip Hindi English Esubs",
+                year: "2026",
+                category: "series",
+                season: "S01",
+                url: "https://example.com/east-of-eden"
             }
+
+            // =====================================================
+            // नया content इसी format में नीचे paste करें:
+            //
+            // {
+            //     id: 4,
+            //     title: "नई Movie",
+            //     year: "2026",
+            //     category: "movies",
+            //     url: "https://example.com/new-movie"
+            // },
+            //
+            // या Series:
+            //
+            // {
+            //     id: 5,
+            //     title: "नई Series",
+            //     year: "2026",
+            //     category: "series",
+            //     season: "S01",
+            //     url: "https://example.com/new-series"
+            // }
+            // =====================================================
         ];
 
-        // Tabs ki list (Agar koi naya section jodna ho toh yahan naam badha sakte hain)
+        // Navigation Tabs
         const tabsOrder = ['home', 'movies', 'series'];
         let currentTab = 'home';
 
+        // ---------------------------------------------------------
+        // Content को category के अनुसार automatic रूप से तैयार करना
+        // ---------------------------------------------------------
+        function prepareItem(item) {
+            const prepared = { ...item };
+
+            if (prepared.category === 'series') {
+                prepared.badgeType = 'show';
+                prepared.badgeText = 'TV SHOW';
+            } else {
+                prepared.category = 'movies';
+                prepared.badgeType = 'movie';
+                prepared.badgeText = 'MOVIE';
+                prepared.season = '';
+            }
+
+            return prepared;
+        }
+
+        // ---------------------------------------------------------
+        // Cards Render
+        // ---------------------------------------------------------
         function renderItems(dataToRender) {
             const grid = document.getElementById('movieGrid');
             grid.innerHTML = '';
@@ -309,8 +355,11 @@
                 return;
             }
 
-            dataToRender.forEach(item => {
+            dataToRender.forEach(rawItem => {
+                const item = prepareItem(rawItem);
+
                 let badgeHTML = '';
+
                 if (item.badgeType === 'movie') {
                     badgeHTML = `<span class="badge-movie">${item.badgeText}</span>`;
                 } else if (item.badgeType === 'show') {
@@ -324,6 +373,8 @@
                 card.className = 'movie-card';
                 card.href = item.url;
                 card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+
                 card.innerHTML = `
                     <div class="poster-container">
                         ${badgeHTML}
@@ -334,15 +385,19 @@
                         <div class="movie-year">${item.year}</div>
                     </div>
                 `;
+
                 grid.appendChild(card);
             });
         }
 
+        // ---------------------------------------------------------
+        // Tab Switch
+        // ---------------------------------------------------------
         function switchTab(tabName) {
             currentTab = tabName;
-            
-            // Buttons ka active class update karna
+
             const tabButtons = document.querySelectorAll('.tab');
+
             tabsOrder.forEach((t, index) => {
                 if (t === tabName) {
                     tabButtons[index].classList.add('active');
@@ -355,21 +410,40 @@
             filterContent();
         }
 
+        // ---------------------------------------------------------
+        // Search + Automatic Category Filtering
+        // ---------------------------------------------------------
         function filterContent() {
-            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-            let combinedList = [];
-            
+            const searchQuery = document
+                .getElementById('searchInput')
+                .value
+                .toLowerCase()
+                .trim();
+
+            let combinedList = [...contentList];
+
+            // Home = सभी content
+            // Movies = केवल category "movies"
+            // Series = केवल category "series"
             if (currentTab === 'movies') {
-                combinedList = [...moviesList].sort((a, b) => b.id - a.id);
+                combinedList = combinedList.filter(
+                    item => item.category === 'movies'
+                );
             } else if (currentTab === 'series') {
-                combinedList = [...showsList].sort((a, b) => b.id - a.id);
-            } else {
-                combinedList = [...moviesList, ...showsList].sort((a, b) => b.id - a.id);
+                combinedList = combinedList.filter(
+                    item => item.category === 'series'
+                );
             }
 
-            if (searchQuery.trim() !== '') {
-                combinedList = combinedList.filter(item => item.title.toLowerCase().includes(searchQuery));
+            // Search
+            if (searchQuery !== '') {
+                combinedList = combinedList.filter(item =>
+                    item.title.toLowerCase().includes(searchQuery)
+                );
             }
+
+            // Latest ID first
+            combinedList.sort((a, b) => b.id - a.id);
 
             renderItems(combinedList);
         }
