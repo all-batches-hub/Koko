@@ -23,6 +23,7 @@
             max-width: 480px;
             background: #0b0f19;
             position: relative;
+            overflow: hidden;
         }
         .sticky-top-section {
             position: sticky;
@@ -227,15 +228,14 @@
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="app-container" id="appContainer">
         
         <div class="sticky-top-section">
             <div class="header">
                 <div class="logo-area">
                     <div class="logo-icon">🎬</div>
                     <div class="logo-text">
-                        <h1>Sky4k MOVIES</h1>
-            
+                        <h1>ATOZ CINEMAS</h1>
                         <p>YOUR MOVIE PARADISE</p>
                     </div>
                 </div>
@@ -245,10 +245,11 @@
                 </div>
             </div>
 
-            <div class="nav-box-container">
-                <button class="tab active" onclick="switchTab('home', this)">Home</button>
-                <button class="tab" onclick="switchTab('movies', this)">Movies</button>
-                <button class="tab" onclick="switchTab('series', this)">Series</button>
+            <!-- Navigation Tabs (Yahan aap aur bhi tabs add ya remove kar sakte hain) -->
+            <div class="nav-box-container" id="navTabs">
+                <button class="tab active" onclick="switchTab('home')">Home</button>
+                <button class="tab" onclick="switchTab('movies')">Movies</button>
+                <button class="tab" onclick="switchTab('series')">Series</button>
             </div>
         </div>
 
@@ -257,8 +258,7 @@
     </div>
 
     <script>
-        // Har item mein ek 'id' di gayi hai (jitna bada number, utna recent upload).
-        // Jab aap koi naya item dalein, toh uska id sabse bada rakhein taaki woh top par aaye.
+        // 1. Movies List (Nayi movie ka ID sabse bada rakhein)
         const moviesList = [
             { 
                 id: 1,
@@ -271,7 +271,7 @@
                 url: "https://example.com/drishyam" 
             },
             { 
-                id: 3, // Maan lijiye yeh 6 baje wali movie hai, iska id bada hai
+                id: 3,
                 title: "Toxic 2026 WebRip Hindi Kannada Esubs", 
                 year: "2026", 
                 category: "movies", 
@@ -282,9 +282,10 @@
             }
         ];
 
+        // 2. Series List (Naye show ka ID sabse bada rakhein)
         const showsList = [
             { 
-                id: 2, // Maan lijiye yeh 5 baje wala show hai
+                id: 2,
                 title: "East of Eden 2026 S01 WebRip Hindi English Esubs", 
                 year: "2026", 
                 category: "series", 
@@ -295,6 +296,8 @@
             }
         ];
 
+        // Tabs ki list (Agar koi naya section jodna ho toh yahan naam badha sakte hain)
+        const tabsOrder = ['home', 'movies', 'series'];
         let currentTab = 'home';
 
         function renderItems(dataToRender) {
@@ -335,28 +338,32 @@
             });
         }
 
-        function switchTab(tabName, element) {
+        function switchTab(tabName) {
             currentTab = tabName;
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            element.classList.add('active');
+            
+            // Buttons ka active class update karna
+            const tabButtons = document.querySelectorAll('.tab');
+            tabsOrder.forEach((t, index) => {
+                if (t === tabName) {
+                    tabButtons[index].classList.add('active');
+                } else {
+                    tabButtons[index].classList.remove('active');
+                }
+            });
+
             document.getElementById('searchInput').value = '';
             filterContent();
         }
 
         function filterContent() {
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-            
             let combinedList = [];
             
             if (currentTab === 'movies') {
-                // Movies section mein sirf movies dikhengi (latest upar rakhne ke liye id se sort)
                 combinedList = [...moviesList].sort((a, b) => b.id - a.id);
             } else if (currentTab === 'series') {
-                // Series section mein sirf shows dikhenge (latest upar rakhne ke liye id se sort)
                 combinedList = [...showsList].sort((a, b) => b.id - a.id);
             } else {
-                // Home tab mein movies aur shows dono mix honge aur id ke hisab se 
-                // sabse bada id (latest upload) sabse upar dikhega!
                 combinedList = [...moviesList, ...showsList].sort((a, b) => b.id - a.id);
             }
 
@@ -365,6 +372,39 @@
             }
 
             renderItems(combinedList);
+        }
+
+        // --- Swipe / Slide Gesture Logic (Touch support for mobile) ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        const container = document.getElementById('appContainer');
+
+        container.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        container.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const threshold = 50; // Minimum swipe distance
+            if (touchEndX < touchStartX - threshold) {
+                // Swipe Left -> Next Tab
+                let currentIndex = tabsOrder.indexOf(currentTab);
+                if (currentIndex < tabsOrder.length - 1) {
+                    switchTab(tabsOrder[currentIndex + 1]);
+                }
+            }
+            if (touchEndX > touchStartX + threshold) {
+                // Swipe Right -> Previous Tab
+                let currentIndex = tabsOrder.indexOf(currentTab);
+                if (currentIndex > 0) {
+                    switchTab(tabsOrder[currentIndex - 1]);
+                }
+            }
         }
 
         filterContent();
