@@ -285,6 +285,21 @@
                 category: "movies",
                 url: "https://example.com/toxic"
             },
+            
+            
+            
+            
+                        {
+                id: 2,
+                title: "Pushpa The Rise 2026 WebRip Hindi English Esubs",
+                year: "2026",
+                category: "Movies",
+                season: "Part-01",
+                url: "https://example.com/east-of-eden"
+            },
+            
+            
+            
 
             {
                 id: 2,
@@ -369,6 +384,83 @@
                     ${tab === 'home' ? 'Home' : formatSectionName(tab)}
                 </button>
             `).join('');
+        }
+
+        // ---------------------------------------------------------
+        // Content item ko automatic badge/category ke liye prepare karein
+        // ---------------------------------------------------------
+        function prepareItem(item) {
+            const prepared = { ...item };
+            const category = String(prepared.category || 'movies').trim().toLowerCase();
+            prepared.category = category;
+
+            if (category === 'movies') {
+                prepared.badgeType = 'movie';
+                prepared.badgeText = 'MOVIE';
+            } else if (category === 'series') {
+                prepared.badgeType = 'show';
+                prepared.badgeText = 'TV SHOW';
+            } else {
+                prepared.badgeType = 'show';
+                prepared.badgeText = formatSectionName(category).toUpperCase();
+            }
+
+            return prepared;
+        }
+
+        // ---------------------------------------------------------
+        // Cards Render
+        // ---------------------------------------------------------
+        function renderItems(dataToRender) {
+            const grid = document.getElementById('movieGrid');
+            grid.innerHTML = '';
+
+            if (dataToRender.length === 0) {
+                grid.innerHTML = `<div class="no-results">Koi content nahi mila.</div>`;
+                return;
+            }
+
+            dataToRender.forEach(rawItem => {
+                const item = prepareItem(rawItem);
+
+                // Season UNIVERSAL hai: kisi bhi category me chalega.
+                const seasonHTML = item.season
+                    ? `<span class="badge-season">${item.season}</span>`
+                    : '';
+
+                let badgeHTML = '';
+
+                if (item.badgeType === 'movie') {
+                    badgeHTML = `
+                        ${seasonHTML}
+                        <span class="badge-movie">${item.badgeText}</span>
+                    `;
+                } else {
+                    badgeHTML = `
+                        ${seasonHTML}
+                        <span class="badge-show">${item.badgeText}</span>
+                    `;
+                }
+
+                const card = document.createElement('a');
+                card.className = 'movie-card';
+                card.href = item.url || '#';
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+
+                card.innerHTML = `
+                    <div class="poster-container">
+                        ${badgeHTML}
+                        <span>Poster Image</span>
+                    </div>
+                    <div class="movie-info">
+                        <div class="movie-title">${item.title}</div>
+                        <div class="movie-year">${item.year || ''}</div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
         }
 
         function switchTab(tabName) {
@@ -459,4 +551,5 @@
     </script>
 
 </body>
-</html>
+    </html>
+    
