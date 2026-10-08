@@ -152,13 +152,20 @@
         .poster-container {
             position: relative;
             width: 100%;
-            height: 180px;
+            height: 230px;
             background: #1a233a;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #64748b;
             font-size: 11px;
+            overflow: hidden;
+        }
+        .poster-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         .badge-movie {
             position: absolute;
@@ -171,6 +178,7 @@
             padding: 2px 7px;
             border-radius: 4px;
             text-transform: uppercase;
+            z-index: 2;
         }
         .badge-show {
             position: absolute;
@@ -183,6 +191,7 @@
             padding: 2px 7px;
             border-radius: 4px;
             text-transform: uppercase;
+            z-index: 2;
         }
         .badge-season {
             position: absolute;
@@ -194,6 +203,7 @@
             font-weight: bold;
             padding: 2px 6px;
             border-radius: 4px;
+            z-index: 2;
         }
         .movie-info {
             padding: 10px;
@@ -209,7 +219,7 @@
             color: #f8fafc;
             line-height: 1.3;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -245,7 +255,7 @@
                 </div>
             </div>
 
-            <!-- Navigation Tabs: contentList ki categories se automatically banenge -->
+            <!-- Navigation Tabs -->
             <div class="nav-box-container" id="navTabs"></div>
         </div>
 
@@ -257,130 +267,67 @@
         // =========================================================
         //               SINGLE CONTENT LIST
         // =========================================================
-        // बस यहीं नया Movie या Series जोड़ें।
-        //
-        // category:
-        //   "movies" -> Movies section
-        //   "series" -> Series section
-        //   "anime" -> Anime section
-        //   "bollywood" -> Bollywood section
-        //   Future me koi bhi category -> automatic section
-        //
-        // ID जितना बड़ा होगा, content उतना ऊपर दिखाई देगा।
+        // ध्यान दें: poster में हमेशा इमेज का direct link (.jpg/.png/.webp) डालें।
         // =========================================================
 
         const contentList = [
-    { 
-        id: 4,
-        title: " Drishyam The Conclusion 2026 HDTC Hindi Esubs 2026", 
-        year: "2026", 
-        category: "series", 
-        badgeType: "movie", 
-        badgeText: "MOVIE", 
-        season: "Part-01", 
-        poster: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs", 
-        url: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs" 
-    },
-
-            
-
-    { 
-        id: 3,
-        title: " Drishyam The Conclusion 2026 HDTC Hindi Esubs 2026", 
-        year: "2026", 
-        category: "series", 
-        badgeType: "movie", 
-        badgeText: "MOVIE", 
-        season: "Part-01", 
-        poster: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs", 
-        url: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs" 
-    },
-
-    { 
-        id: 2,
-        title: " Drishyam The Conclusion 2026 HDTC Hindi Esubs 2026", 
-        year: "2026", 
-        category: "movies", 
-        badgeType: "movie", 
-        badgeText: "MOVIE", 
-        season: "Part-01", 
-        poster: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs", 
-        url: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs" 
-    },
-
-
-            
-                { 
-        id: 1,
-        title: " Drishyam The Conclusion 2026 HDTC Hindi Esubs 2026", 
-        year: "2026", 
-        category: "movies", 
-        badgeType: "movie", 
-        badgeText: "MOVIE", 
-        season: "Part-01", 
-        poster: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs", 
-        url: "https://www.imdb.com/title/tt27050858/mediaviewer/rm4050058242/?ref_=ext_shr_lnk" 
-    }
-
-
-
-            
-
-        
-            // =====================================================
-            // नया content इसी format में नीचे paste करें:
-            //
-            // Movie + Season:
-            // {
-            //     id: 4,
-            //     title: "नई Movie",
-            //     year: "2026",
-            //     category: "movies",
-            //     season: "Part 1",
-            //     url: "https://example.com/new-movie"
-            // },
-            //
-            // Series + Season:
-            // {
-            //     id: 5,
-            //     title: "नई Series",
-            //     year: "2026",
-            //     category: "series",
-            //     season: "S01",
-            //     url: "https://example.com/new-series"
-            // },
-            //
-            // Season नहीं चाहिए तो season line हटा दें.
-            // =====================================================
+            { 
+                id: 4,
+                title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs 2026", 
+                year: "2026", 
+                category: "series", 
+                badgeType: "movie", 
+                badgeText: "MOVIE", 
+                season: "Part-01", 
+                poster: "https://m.media-amazon.com/images/M/MV5BMDA4NjA3M2ItY2RkYS00MTM1LTlhNzYtMmI4MmIzNWVkOTY5XkEyXkFqcGc@._V1_.jpg", 
+                url: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs" 
+            },
+            { 
+                id: 3,
+                title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs 2026", 
+                year: "2026", 
+                category: "series", 
+                badgeType: "movie", 
+                badgeText: "MOVIE", 
+                season: "Part-01", 
+                poster: "https://m.media-amazon.com/images/M/MV5BMDA4NjA3M2ItY2RkYS00MTM1LTlhNzYtMmI4MmIzNWVkOTY5XkEyXkFqcGc@._V1_.jpg", 
+                url: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs" 
+            },
+            { 
+                id: 2,
+                title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs 2026", 
+                year: "2026", 
+                category: "movies", 
+                badgeType: "movie", 
+                badgeText: "MOVIE", 
+                season: "Part-01", 
+                poster: "https://m.media-amazon.com/images/M/MV5BMDA4NjA3M2ItY2RkYS00MTM1LTlhNzYtMmI4MmIzNWVkOTY5XkEyXkFqcGc@._V1_.jpg", 
+                url: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs" 
+            },
+            { 
+                id: 1,
+                title: "Drishyam The Conclusion 2026 HDTC Hindi Esubs 2026", 
+                year: "2026", 
+                category: "movies", 
+                badgeType: "movie", 
+                badgeText: "MOVIE", 
+                season: "Part-01", 
+                poster: "https://m.media-amazon.com/images/M/MV5BMDA4NjA3M2ItY2RkYS00MTM1LTlhNzYtMmI4MmIzNWVkOTY5XkEyXkFqcGc@._V1_.jpg", 
+                url: "https://atoz.cinemaz.workers.dev/drishyam-the-conclusion-2026-hdtc-hindi-esubs" 
+            }
         ];
-
-        // =========================================================
-        // AUTOMATIC SECTIONS
-        // =========================================================
-        // Naya section banane ke liye sirf content me nayi category likhein.
-        //
-        // Example:
-        // category: "anime"
-        // category: "bollywood"
-        // category: "hollywood"
-        //
-        // Section ka button automatically ban jayega.
-        // =========================================================
 
         let tabsOrder = [];
         let currentTab = 'home';
 
         function getSections() {
             const sections = [];
-
             contentList.forEach(item => {
                 const category = String(item.category || '').trim().toLowerCase();
-
                 if (category && !sections.includes(category)) {
                     sections.push(category);
                 }
             });
-
             return sections;
         }
 
@@ -392,7 +339,6 @@
 
         function buildNavigation() {
             const nav = document.getElementById('navTabs');
-
             tabsOrder = ['home', ...getSections()];
 
             nav.innerHTML = tabsOrder.map(tab => `
@@ -403,9 +349,6 @@
             `).join('');
         }
 
-        // ---------------------------------------------------------
-        // Content item ko automatic badge/category ke liye prepare karein
-        // ---------------------------------------------------------
         function prepareItem(item) {
             const prepared = { ...item };
             const category = String(prepared.category || 'movies').trim().toLowerCase();
@@ -426,7 +369,7 @@
         }
 
         // ---------------------------------------------------------
-        // Cards Render
+        // Cards Render Function (Poster Fix Implemented Here)
         // ---------------------------------------------------------
         function renderItems(dataToRender) {
             const grid = document.getElementById('movieGrid');
@@ -440,7 +383,6 @@
             dataToRender.forEach(rawItem => {
                 const item = prepareItem(rawItem);
 
-                // Season UNIVERSAL hai: kisi bhi category me chalega.
                 const seasonHTML = item.season
                     ? `<span class="badge-season">${item.season}</span>`
                     : '';
@@ -459,6 +401,11 @@
                     `;
                 }
 
+                // Image HTML Code
+                const imageHTML = item.poster 
+                    ? `<img src="${item.poster}" alt="${item.title}" class="poster-img" loading="lazy">` 
+                    : `<span>No Poster</span>`;
+
                 const card = document.createElement('a');
                 card.className = 'movie-card';
                 card.href = item.url || '#';
@@ -468,7 +415,7 @@
                 card.innerHTML = `
                     <div class="poster-container">
                         ${badgeHTML}
-                        <span>Poster Image</span>
+                        ${imageHTML}
                     </div>
                     <div class="movie-info">
                         <div class="movie-title">${item.title}</div>
@@ -482,7 +429,6 @@
 
         function switchTab(tabName) {
             currentTab = tabName;
-
             const tabButtons = document.querySelectorAll('.tab');
 
             tabButtons.forEach((button, index) => {
@@ -497,9 +443,6 @@
             filterContent();
         }
 
-        // ---------------------------------------------------------
-        // Search + Automatic Category Filtering
-        // ---------------------------------------------------------
         function filterContent() {
             const searchQuery = document
                 .getElementById('searchInput')
@@ -509,31 +452,25 @@
 
             let combinedList = [...contentList];
 
-            // Home = सभी content
-            // बाकी किसी भी section में उसी category का content आएगा।
             if (currentTab !== 'home') {
                 combinedList = combinedList.filter(
                     item => String(item.category || '').toLowerCase() === currentTab
                 );
             }
 
-            // Search
             if (searchQuery !== '') {
                 combinedList = combinedList.filter(item =>
                     item.title.toLowerCase().includes(searchQuery)
                 );
             }
 
-            // Latest ID first
             combinedList.sort((a, b) => b.id - a.id);
-
             renderItems(combinedList);
         }
 
-        // --- Swipe / Slide Gesture Logic (Touch support for mobile) ---
+        // Swipe Gestures for Mobile
         let touchStartX = 0;
         let touchEndX = 0;
-
         const container = document.getElementById('appContainer');
 
         container.addEventListener('touchstart', e => {
@@ -546,16 +483,14 @@
         }, false);
 
         function handleSwipe() {
-            const threshold = 50; // Minimum swipe distance
+            const threshold = 50;
             if (touchEndX < touchStartX - threshold) {
-                // Swipe Left -> Next Tab
                 let currentIndex = tabsOrder.indexOf(currentTab);
                 if (currentIndex < tabsOrder.length - 1) {
                     switchTab(tabsOrder[currentIndex + 1]);
                 }
             }
             if (touchEndX > touchStartX + threshold) {
-                // Swipe Right -> Previous Tab
                 let currentIndex = tabsOrder.indexOf(currentTab);
                 if (currentIndex > 0) {
                     switchTab(tabsOrder[currentIndex - 1]);
@@ -568,5 +503,4 @@
     </script>
 
 </body>
-    </html>
-    
+</html>
