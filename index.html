@@ -245,22 +245,13 @@
                 </div>
             </div>
 
-            <!-- Navigation Tabs (Yahan aap aur bhi tabs add ya remove kar sakte hain) -->
-            <div class="nav-box-container" id="navTabs">
-                <button class="tab active" onclick="switchTab('home')">Home</button>
-                <button class="tab" onclick="switchTab('movies')">Movies</button>
-                <button class="tab" onclick="switchTab('series')">Series</button>
-            </div>
+            <!-- Navigation Tabs: contentList ki categories se automatically banenge -->
+            <div class="nav-box-container" id="navTabs"></div>
         </div>
 
         <div class="movie-grid" id="movieGrid"></div>
 
     </div>
-
-
-
-
-
 
     <script>
         // =========================================================
@@ -271,6 +262,9 @@
         // category:
         //   "movies" -> Movies section
         //   "series" -> Series section
+        //   "anime" -> Anime section
+        //   "bollywood" -> Bollywood section
+        //   Future me koi bhi category -> automatic section
         //
         // ID जितना बड़ा होगा, content उतना ऊपर दिखाई देगा।
         // =========================================================
@@ -297,32 +291,24 @@
                 title: "East of Eden 2026 S01 WebRip Hindi English Esubs",
                 year: "2026",
                 category: "series",
-                season: "Part-01",
-                url: "https://youtu.be/oyAGUs9F0JA?si=kJ-1OjZ9RfH5jw92"
-            },
-    { 
-        id: 4,
-        title: "Pushpa The Rise", 
-        year: "2023", 
-        category: "movies", 
-        badgeType: "movie", 
-        badgeText: "MOVIE", 
-        season: "Part-1", 
-        url: "https://youtu.be/oyAGUs9F0JA?si=kJ-1OjZ9RfH5jw92" 
-    }
+                season: "S01",
+                url: "https://example.com/east-of-eden"
+            }
+
             // =====================================================
             // नया content इसी format में नीचे paste करें:
             //
+            // Movie + Season:
             // {
             //     id: 4,
             //     title: "नई Movie",
             //     year: "2026",
             //     category: "movies",
+            //     season: "Part 1",
             //     url: "https://example.com/new-movie"
             // },
             //
-            // या Series:
-            //
+            // Series + Season:
             // {
             //     id: 5,
             //     title: "नई Series",
@@ -330,93 +316,71 @@
             //     category: "series",
             //     season: "S01",
             //     url: "https://example.com/new-series"
-            // }
+            // },
+            //
+            // Season नहीं चाहिए तो season line हटा दें.
             // =====================================================
         ];
 
-        // Navigation Tabs
-        const tabsOrder = ['home', 'movies', 'series'];
+        // =========================================================
+        // AUTOMATIC SECTIONS
+        // =========================================================
+        // Naya section banane ke liye sirf content me nayi category likhein.
+        //
+        // Example:
+        // category: "anime"
+        // category: "bollywood"
+        // category: "hollywood"
+        //
+        // Section ka button automatically ban jayega.
+        // =========================================================
+
+        let tabsOrder = [];
         let currentTab = 'home';
 
-        // ---------------------------------------------------------
-        // Content को category के अनुसार automatic रूप से तैयार करना
-        // ---------------------------------------------------------
-        function prepareItem(item) {
-            const prepared = { ...item };
+        function getSections() {
+            const sections = [];
 
-            if (prepared.category === 'series') {
-                prepared.badgeType = 'show';
-                prepared.badgeText = 'TV SHOW';
-            } else {
-                prepared.category = 'movies';
-                prepared.badgeType = 'movie';
-                prepared.badgeText = 'MOVIE';
-                prepared.season = '';
-            }
+            contentList.forEach(item => {
+                const category = String(item.category || '').trim().toLowerCase();
 
-            return prepared;
-        }
-
-        // ---------------------------------------------------------
-        // Cards Render
-        // ---------------------------------------------------------
-        function renderItems(dataToRender) {
-            const grid = document.getElementById('movieGrid');
-            grid.innerHTML = '';
-
-            if (dataToRender.length === 0) {
-                grid.innerHTML = `<div class="no-results">Koi content nahi mila.</div>`;
-                return;
-            }
-
-            dataToRender.forEach(rawItem => {
-                const item = prepareItem(rawItem);
-
-                let badgeHTML = '';
-
-                if (item.badgeType === 'movie') {
-                    badgeHTML = `<span class="badge-movie">${item.badgeText}</span>`;
-                } else if (item.badgeType === 'show') {
-                    badgeHTML = `
-                        ${item.season ? `<span class="badge-season">${item.season}</span>` : ''}
-                        <span class="badge-show">${item.badgeText}</span>
-                    `;
+                if (category && !sections.includes(category)) {
+                    sections.push(category);
                 }
-
-                const card = document.createElement('a');
-                card.className = 'movie-card';
-                card.href = item.url;
-                card.target = '_blank';
-                card.rel = 'noopener noreferrer';
-
-                card.innerHTML = `
-                    <div class="poster-container">
-                        ${badgeHTML}
-                        <span>Poster Image</span>
-                    </div>
-                    <div class="movie-info">
-                        <div class="movie-title">${item.title}</div>
-                        <div class="movie-year">${item.year}</div>
-                    </div>
-                `;
-
-                grid.appendChild(card);
             });
+
+            return sections;
         }
 
-        // ---------------------------------------------------------
-        // Tab Switch
-        // ---------------------------------------------------------
+        function formatSectionName(name) {
+            return name
+                .replace(/[-_]+/g, ' ')
+                .replace(/\b\w/g, letter => letter.toUpperCase());
+        }
+
+        function buildNavigation() {
+            const nav = document.getElementById('navTabs');
+
+            tabsOrder = ['home', ...getSections()];
+
+            nav.innerHTML = tabsOrder.map(tab => `
+                <button class="tab ${tab === 'home' ? 'active' : ''}"
+                        onclick="switchTab('${tab}')">
+                    ${tab === 'home' ? 'Home' : formatSectionName(tab)}
+                </button>
+            `).join('');
+        }
+
         function switchTab(tabName) {
             currentTab = tabName;
 
             const tabButtons = document.querySelectorAll('.tab');
 
-            tabsOrder.forEach((t, index) => {
-                if (t === tabName) {
-                    tabButtons[index].classList.add('active');
+            tabButtons.forEach((button, index) => {
+                if (tabsOrder[index] === tabName) {
+                    button.classList.add('active');
                 } else {
-                    tabButtons[index].classList.remove('active');
+                    button.classList.remove('active');
                 }
             });
 
@@ -437,15 +401,10 @@
             let combinedList = [...contentList];
 
             // Home = सभी content
-            // Movies = केवल category "movies"
-            // Series = केवल category "series"
-            if (currentTab === 'movies') {
+            // बाकी किसी भी section में उसी category का content आएगा।
+            if (currentTab !== 'home') {
                 combinedList = combinedList.filter(
-                    item => item.category === 'movies'
-                );
-            } else if (currentTab === 'series') {
-                combinedList = combinedList.filter(
-                    item => item.category === 'series'
+                    item => String(item.category || '').toLowerCase() === currentTab
                 );
             }
 
@@ -495,6 +454,7 @@
             }
         }
 
+        buildNavigation();
         filterContent();
     </script>
 
